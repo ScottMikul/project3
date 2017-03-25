@@ -34,19 +34,19 @@ public class UserTest {
     @Test
     public void UserReputationIncrementsByFiveOnQuestionUpvote(){
         Craig.upVote(joke);
-        assertEquals(Scotty.getReputation(),5);
+        assertEquals(5,Scotty.getReputation());
     }
 
     @Test
     public void UserReputationIncrementsByTenOnAnswerUpvote(){
         SillySally.upVote(punchline);
-        assertEquals(comedian.getReputation(),10);
+        assertEquals(10,comedian.getReputation());
     }
 
     @Test
     public void UserReputationIncrementsByFifteenOnAcceptedAnswer(){
         Scotty.acceptAnswer(punchline);
-        assertEquals(comedian.getReputation(),15);
+        assertEquals(15,comedian.getReputation());
 
     }
 
@@ -72,15 +72,20 @@ public class UserTest {
 
     @Test(expected = AnswerAcceptanceException.class)
     public void UserCanNotAcceptAnswerForAnotherUserQuestion() throws Exception {
-        comedian.acceptAnswer(punchline);
-
+        try {
+            comedian.acceptAnswer(punchline);
+        }
+        catch (AnswerAcceptanceException expected){
+            assertEquals("Only Scotty can accept this answer as it is their question",expected.getMessage());
+            throw expected;
+        }
     }
 
     @Test
     public void DownVotingAnAnswerRemovesOneReputation() throws Exception {
         Scotty.acceptAnswer(punchline);
-        assertEquals(comedian.getReputation(),15);
+        assertEquals(15,comedian.getReputation());
         PeanutGallery.downVote(punchline);
-        assertEquals(comedian.getReputation(),14);
+        assertEquals(14, comedian.getReputation());
     }
 }
